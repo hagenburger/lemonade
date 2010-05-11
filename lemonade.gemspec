@@ -18,9 +18,17 @@ Gem::Specification.new do |s|
   s.files = [
     ".document",
      ".gitignore",
+     "MIT-LICENSE",
+     "README.md",
      "Rakefile",
      "VERSION",
+     "lemonade.gemspec",
      "lib/lemonade.rb",
+     "lib/lemonade/lemonade.rb",
+     "lib/lemonade/sass_extensions/functions/lemonade.rb",
+     "spec/images/other_images/more-images/sprites/test-2.png",
+     "spec/images/sprites/test-1.png",
+     "spec/images/sprites/test-2.png",
      "spec/lemonade_spec.rb",
      "spec/spec.opts",
      "spec/spec_helper.rb"
