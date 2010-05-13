@@ -10,6 +10,9 @@ begin
     gem.email = "gems@hagenburger.net"
     gem.homepage = "http://github.com/hagenburger/lemonade"
     gem.authors = ["Nico Hagenburger"]
+    gem.add_dependency "haml", ">= 2.2.24"
+    gem.add_dependency "compass", ">= 0.10.0"
+    gem.add_dependency "rmagick"
     gem.add_development_dependency "rspec", ">= 1.2.9"
   end
   Jeweler::GemcutterTasks.new
