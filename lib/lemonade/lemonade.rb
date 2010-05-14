@@ -15,6 +15,7 @@ module Lemonade
         sprite_image.write file
       end
       $lemonade_sprites = nil
+      $lemonade_space_bottom = 0
     end
   end
 end

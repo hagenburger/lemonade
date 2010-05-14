@@ -9,6 +9,12 @@ describe Lemonade::SassExtensions::Functions::Lemonade do
   after :each do
     FileUtils.rm_r IMAGES_TMP_PATH
     $lemonade_sprites = nil
+    $lemonade_space_bottom = nil
+  end
+  
+  def image_size(file)
+    Lemonade::generate_sprites
+    IO.read(IMAGES_TMP_PATH + '/' + file)[0x10..0x18].unpack('NN')
   end
   
   def evaluate(value)
@@ -16,11 +22,11 @@ describe Lemonade::SassExtensions::Functions::Lemonade do
   end
   
   it "should return the sprite file name" do
-    evaluate('sprite-image("sprites/test-1.png")').should == "url('/sprites.png')"
+    evaluate('sprite-image("sprites/30x30.png")').should == "url('/sprites.png')"
   end
   
   it "should work in folders with dashes and underscores" do
-    evaluate('sprite-image("other_images/more-images/sprites/test-2.png")').should ==
+    evaluate('sprite-image("other_images/more-images/sprites/test.png")').should ==
       "url('/other_images/more-images/sprites.png')"
   end
   
@@ -29,14 +35,58 @@ describe Lemonade::SassExtensions::Functions::Lemonade do
   end
   
   it "should set the background position" do
-    evaluate('sprite-image("sprites/test-1.png")').should == "url('/sprites.png')"
-    evaluate('sprite-image("sprites/test-2.png")').should == "url('/sprites.png') 0 -30px"
-    Lemonade::generate_sprites
-    File.exists?(IMAGES_TMP_PATH + '/sprites.png').should be_true
+    evaluate('sprite-image("sprites/30x30.png")').should == "url('/sprites.png')"
+    evaluate('sprite-image("sprites/150x10.png")').should == "url('/sprites.png') 0 -30px"
+    image_size('sprites.png').should == [150, 40]
   end
   
   it "should use the X position" do
-    evaluate('sprite-image("sprites/test-1.png", 5px, 0)').should == "url('/sprites.png') 5px 0"
+    evaluate('sprite-image("sprites/30x30.png", 5px, 0)').should == "url('/sprites.png') 5px 0"
+    image_size('sprites.png').should == [30, 30]
+  end
+  
+  it "should calculate 20px empty space between sprites" do
+    # Resulting sprite should look like (1 line = 10px height, X = placed image):
+    
+    # X
+    # 
+    # 
+    # XX
+    # XX
+    # 
+    # 
+    # XXX
+    # XXX
+    # XXX
+    
+    evaluate('sprite-image("sprites/10x10.png")').should == "url('/sprites.png')"
+    # space before #2: 20px
+    evaluate('sprite-image("sprites/20x20.png", 0, 0, 20px)').should == "url('/sprites.png') 0 -30px"
+    # space after #2: 20px
+    evaluate('sprite-image("sprites/30x30.png")').should == "url('/sprites.png') 0 -70px"
+    image_size('sprites.png').should == [30, 100]
+  end
+  
+  it "should calculate empty space between sprites and combine space like CSS margins" do
+    # Resulting sprite should look like (1 line = 10px height, X = placed image):
+    
+    # X
+    # 
+    # 
+    # 
+    # XX
+    # XX
+    # 
+    # XXX
+    # XXX
+    # XXX
+    
+    evaluate('sprite-image("sprites/10x10.png", 0, 0, 0, 30px)').should == "url('/sprites.png')"
+    # space between #1 and #2: 30px (=> 30px > 20px)
+    evaluate('sprite-image("sprites/20x20.png", 0, 0, 20px, 5px)').should == "url('/sprites.png') 0 -40px"
+    # space between #2 and #3: 10px (=> 5px < 10px)
+    evaluate('sprite-image("sprites/30x30.png", 0, 0, 10px)').should == "url('/sprites.png') 0 -70px"
+    image_size('sprites.png').should == [30, 100]
   end
   
 end
