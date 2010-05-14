@@ -9,7 +9,8 @@ module Lemonade
         sprite[:images].each do |image|
           file = File.join(Compass.configuration.images_path, image[:file])
           single_image  = Magick::Image::read(file).first
-          sprite_image.composite!(single_image, image[:x], image[:y], Magick::OverCompositeOp)
+          x = (sprite[:width] - image[:width]) * image[:x]
+          sprite_image.composite!(single_image, x, image[:y], Magick::OverCompositeOp)
         end
         file = File.join(Compass.configuration.images_path, "#{ sprite_name }.png")
         sprite_image.write file

@@ -3,13 +3,13 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 describe Lemonade::SassExtensions::Functions::Lemonade do
   before :each do
     @sass = Sass::Environment.new
+    $lemonade_sprites = nil
+    $lemonade_margin_bottom = nil
     FileUtils.cp_r File.dirname(__FILE__) + '/images', IMAGES_TMP_PATH
   end
   
   after :each do
     FileUtils.rm_r IMAGES_TMP_PATH
-    $lemonade_sprites = nil
-    $lemonade_space_bottom = nil
   end
   
   def image_size(file)
@@ -87,6 +87,16 @@ describe Lemonade::SassExtensions::Functions::Lemonade do
     # space between #2 and #3: 10px (=> 5px < 10px)
     evaluate('sprite-image("sprites/30x30.png", 0, 0, 10px)').should == "url('/sprites.png') 0 -70px"
     image_size('sprites.png').should == [30, 100]
+  end
+  
+  it "should allow % for x positions" do
+    # Resulting sprite should look like (1 line = 10px height, X = placed image):
+    
+    # XXXXXXXXXXXXXXX
+    #               X
+    
+    evaluate('sprite-image("sprites/150x10.png")')
+    evaluate('sprite-image("sprites/10x10.png", 100%)').should == "url('/sprites.png') 100% -10px"
   end
   
 end
