@@ -1,7 +1,7 @@
 Lemonade—On the fly sprite generator for Sass/Compass
 =====================================================
 
-Usage (SCSS or Sass):
+Usage ([SCSS or Sass](http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html)):
 
     .fanta {
       background: sprite-image("bottles/fanta.png");
@@ -40,10 +40,16 @@ Background
 Installation
 ------------
 
-    gem install haml
-    gem install compass
-    gem install rmagick
     gem install lemonade
+    
+
+Current State
+-------------
+
+* Compass standalone finished
+* Rails Sass integration finished
+* Staticmatic integration finished
+* Haml integration (with “:sass” filter): work in progress
 
 
 Options
@@ -61,6 +67,28 @@ Output (assuming the calculated position would be “0 -50px” as shown above):
     .seven-up {
       background: url('/images/bottles.png') 12px -47px;
     }
+
+If you need empty space around the current image, this will add 20px transparent space above and below.
+
+    .seven-up {
+      background: sprite-image("bottles/seven-up.png", 0, 0, 20px);
+    }
+    
+This one adds 20px above, 30px below:
+    
+    .seven-up {
+      background: sprite-image("bottles/seven-up.png", 0, 0, 20px, 30px);
+    }
+
+Right aligned images are possible:
+
+    .seven-up {
+      background: sprite-image("bottles/seven-up.png", 100%, 4px);
+    }
+    
+The original image will be placed on the right side of the sprite image.
+Use this, if you have a link with an arrow on the right side (like Apple).
+    
 
 
 Note on Patches/Pull Requests
