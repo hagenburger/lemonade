@@ -22,6 +22,7 @@ module Lemonade::SassExtensions::Functions::Lemonade
     file = image_url(Sass::Script::String.new("#{ dir }#{ name }.png"))
     Sass::Script::String.new("#{ file }#{ position }")
   end
+  alias_method :sprite_img, :sprite_image
   
 private
 

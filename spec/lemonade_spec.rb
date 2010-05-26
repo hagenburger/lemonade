@@ -25,6 +25,10 @@ describe Lemonade::SassExtensions::Functions::Lemonade do
     evaluate('sprite-image("sprites/30x30.png")').should == "url('/sprites.png')"
   end
   
+  it "should also work with `sprite-img`" do
+    evaluate('sprite-img("sprites/30x30.png")').should == "url('/sprites.png')"
+  end
+  
   it "should work in folders with dashes and underscores" do
     evaluate('sprite-image("other_images/more-images/sprites/test.png")').should ==
       "url('/other_images/more-images/sprites.png')"
