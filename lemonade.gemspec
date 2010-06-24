@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
      "MIT-LICENSE",
      "README.md",
      "Rakefile",
+     "TODO.md",
      "VERSION",
      "lemonade.gemspec",
      "lib/lemonade.rb",
