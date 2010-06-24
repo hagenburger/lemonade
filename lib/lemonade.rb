@@ -8,7 +8,7 @@ end
 require 'rubygems'
 require 'compass'
 require 'sass/plugin'
-require 'rmagick'
+require 'chunky_png'
 require File.dirname(__FILE__) + '/lemonade/sass_extensions/functions/lemonade'
 require File.dirname(__FILE__) + '/lemonade/lemonade'
 
