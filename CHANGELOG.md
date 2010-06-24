@@ -8,6 +8,7 @@ Changelog
 * Switched from RMagick to chunky_png gem
   * No RMagick/ImageMagick required anymore (Rails 2.3.x sometimes crashed)
   * Only PNG files are supported (both input and output)
+* Don’t compose the same image twice (use background-position of first image instead)
 * Wrote this changelog
 
 

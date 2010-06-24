@@ -10,14 +10,19 @@ module Lemonade::SassExtensions::Functions::Lemonade
     width = image_width(file).value
     margin_top = calculate_margin_top(margin_top_or_both, margin_bottom)
 
+    file = file.to_s.gsub('"', '')
     $lemonade_sprites ||= {}
     sprite = $lemonade_sprites["#{ dir }/#{ name }"] ||= { :height => 0, :width => 0, :images => [] }
-    x = (add_x and add_x.numerator_units == %w(%)) ? add_x.value / 100 : 0
-    y = sprite[:height] + margin_top
-    sprite[:height] += height + margin_top
-    sprite[:width] = width if width > sprite[:width]
-    sprite[:images] << { :file => file.to_s.gsub('"', ''), :height => height, :width => width, :x => x, :y => y }
-
+    if image = sprite[:images].detect{ |image| image[:file] == file }
+      y = image[:y]
+    else
+      x = (add_x and add_x.numerator_units == %w(%)) ? add_x.value / 100 : 0
+      y = sprite[:height] + margin_top
+      sprite[:height] += height + margin_top
+      sprite[:width] = width if width > sprite[:width]
+      sprite[:images] << { :file => file, :height => height, :width => width, :x => x, :y => y }
+    end
+    
     position = background_position(0, y, add_x, add_y)
     file = image_url(Sass::Script::String.new("#{ dir }#{ name }.png"))
     Sass::Script::String.new("#{ file }#{ position }")

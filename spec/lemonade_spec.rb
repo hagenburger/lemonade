@@ -103,4 +103,11 @@ describe Lemonade::SassExtensions::Functions::Lemonade do
     evaluate('sprite-image("sprites/10x10.png", 100%)').should == "url('/sprites.png') 100% -10px"
   end
   
+  it "should not compose the same image twice" do
+    evaluate('sprite-image("sprites/10x10.png")').should == "url('/sprites.png')"
+    evaluate('sprite-image("sprites/20x20.png")').should == "url('/sprites.png') 0 -10px"
+    evaluate('sprite-image("sprites/20x20.png")').should == "url('/sprites.png') 0 -10px" # reuse image from line above
+    image_size('sprites.png').should == [20, 30]
+  end
+  
 end
