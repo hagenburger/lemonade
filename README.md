@@ -35,6 +35,7 @@ Background
 * No Rake task needed
 * No additional classes
 * No configuration
+* No RMagick required (but full support for PNG)
 
 
 Installation
@@ -88,7 +89,6 @@ Right aligned images are possible:
     
 The original image will be placed on the right side of the sprite image.
 Use this, if you have a link with an arrow on the right side (like Apple).
-    
 
 
 Note on Patches/Pull Requests
@@ -101,6 +101,7 @@ Note on Patches/Pull Requests
 * Commit, do not mess with rakefile, version, or history.
   (if you want to have your own version, that is fine but bump version in a commit by itself I can ignore when I pull)
 * Send me a pull request. Bonus points for topic branches.
+
 
 Copyright
 ---------
