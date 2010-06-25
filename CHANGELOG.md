@@ -9,6 +9,7 @@ Changelog
   * No RMagick/ImageMagick required anymore (Rails 2.3.x sometimes crashed)
   * Only PNG files are supported (both input and output)
 * Don’t compose the same image twice (use background-position of first image instead)
+* Space between images now works as expected if more than 1 output image (path) is used
 * Wrote this changelog
 
 

@@ -29,6 +29,7 @@ Gem::Specification.new do |s|
      "lib/lemonade/lemonade.rb",
      "lib/lemonade/sass_extensions/functions/lemonade.rb",
      "spec/images/other_images/more-images/sprites/test.png",
+     "spec/images/other_images/test.png",
      "spec/images/sprites/10x10.png",
      "spec/images/sprites/150x10.png",
      "spec/images/sprites/20x20.png",
