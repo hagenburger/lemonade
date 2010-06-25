@@ -14,7 +14,6 @@ module Lemonade
         sprite_image.save file#, :fast_rgba
       end
       $lemonade_sprites = nil
-      $lemonade_space_bottom = 0
     end
   end
 end

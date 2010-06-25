@@ -93,6 +93,12 @@ describe Lemonade::SassExtensions::Functions::Lemonade do
     image_size('sprites.png').should == [30, 100]
   end
   
+  it "should calculate empty space correctly when 2 output images are uses" do
+    evaluate('sprite-image("sprites/10x10.png", 0, 0, 0, 30px)').should == "url('/sprites.png')"
+    evaluate('sprite-image("other_images/test.png")').should == "url('/other_images.png')"
+    evaluate('sprite-image("sprites/20x20.png", 0, 0, 20px, 5px)').should == "url('/sprites.png') 0 -40px"
+  end
+  
   it "should allow % for x positions" do
     # Resulting sprite should look like (1 line = 10px height, X = placed image):
     
