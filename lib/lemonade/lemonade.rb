@@ -13,7 +13,7 @@ module Lemonade
           # This works as expected:
           0.upto image[:width] - 1 do |xx|
             0.upto image[:height] - 1 do |yy|
-              sprite_image[x + xx, y + yy] = single_image[xx, yy]
+              sprite_image[x + xx, image[:y] + yy] = single_image[xx, yy]
             end
           end
         end
