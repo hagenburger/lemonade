@@ -6,7 +6,7 @@ begin
   Jeweler::Tasks.new do |gem|
     gem.name = "lemonade"
     gem.summary = "On the fly sprite generator for Sass/Compass"
-    gem.description = "Generates sprites on the fly by using `background: sprite-image(\"sprites/logo.png\")`."
+    gem.description = "Generates sprites on the fly by using `background: sprite-image(\"sprites/logo.png\")`. No Photoshop, no RMagick, no Rake task, save your time and have a lemonade."
     gem.email = "gems@hagenburger.net"
     gem.homepage = "http://github.com/hagenburger/lemonade"
     gem.authors = ["Nico Hagenburger"]

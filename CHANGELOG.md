@@ -1,6 +1,18 @@
 Changelog
 =========
 
+0.3.2
+-----
+
+* Fixed 0.3.1 composition
+
+
+0.3.1
+-----
+
+* Fixed rendering of images with RGBA values (no dark borders anymore)
+* (buggy composition)
+
 
 0.3.0
 -----
