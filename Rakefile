@@ -12,7 +12,7 @@ begin
     gem.authors = ["Nico Hagenburger"]
     gem.add_dependency "haml", ">= 3.0.0"
     gem.add_dependency "compass", ">= 0.10.0"
-    gem.add_dependency "chunky_png", ">= 0.7.3"
+    gem.add_dependency "chunky_png", ">= 0.8.0"
     gem.add_development_dependency "rspec", ">= 1.2.9"
   end
   Jeweler::GemcutterTasks.new

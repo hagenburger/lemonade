@@ -1,7 +1,10 @@
 Lemonade—On the fly sprite generator for Sass/Compass
 =====================================================
 
-Usage ([SCSS or Sass](http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html)):
+Please read my [blog post on CSS sprites for Sass/Compass](http://www.hagenburger.net/BLOG/Lemonade-CSS-Sprites-for-Sass-Compass.html) or have a look at the presentation [3 steps to make better and faster frontends](http://www.slideshare.net/hagenburger/3-steps-to-make-better-faster-frontends) (slides 23—37).
+
+
+**Usage ([SCSS or Sass](http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html)):**
 
     .fanta {
       background: sprite-image("bottles/fanta.png");
@@ -13,7 +16,7 @@ Usage ([SCSS or Sass](http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html)
       background: sprite-image("cans/coke.png") no-repeat;
     }
 
-Output (CSS):
+**Output (CSS):**
 
     .fanta {
       background: url('/images/bottles.png');

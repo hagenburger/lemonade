@@ -1,7 +1,14 @@
 Changelog
 =========
 
+0.3.4
+-----
+
+* Updated to chunky_png 0.8.0 (PNG color issues have been fixed there)
+
+
 0.3.3
+-----
 
 * Fixed Rails 3.0 integration (Beta 4)
 
