@@ -9,8 +9,8 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Nico Hagenburger"]
-  s.date = %q{2010-06-30}
-  s.description = %q{Generates sprites on the fly by using `background: sprite-image("sprites/logo.png")`.}
+  s.date = %q{2010-07-04}
+  s.description = %q{Generates sprites on the fly by using `background: sprite-image("sprites/logo.png")`. No Photoshop, no RMagick, no Rake task, save your time and have a lemonade.}
   s.email = %q{gems@hagenburger.net}
   s.extra_rdoc_files = [
     "README.md"

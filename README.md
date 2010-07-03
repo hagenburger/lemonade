@@ -111,6 +111,7 @@ If you want to use Lemonade with Rails 3 Please use this compass and haml versio
     gem 'compass',     '0.10.2'
     gem 'haml-edge',   '3.1.49', :require => 'haml'
 
+
 Copyright
 ---------
 

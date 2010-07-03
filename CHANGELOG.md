@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.3.3
+
+* Fixed Rails 3.0 integration (Beta 4)
+
+
 0.3.2
 -----
 
