@@ -44,7 +44,15 @@ Background
 Installation
 ------------
 
+(1)
+
     gem install lemonade
+   
+(2) 
+Now open your `config.rb` ([Compass cofiguration file](http://compass-style.org/docs/tutorials/configuration-reference/)) and add one line after this comment:
+
+    # Require any additional compass plugins here.
+    require "lemonade"
     
 
 Current State
