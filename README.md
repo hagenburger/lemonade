@@ -1,7 +1,7 @@
 Lemonade—On the fly sprite generator for Sass/Compass
 =====================================================
 
-Please read my [blog post on CSS sprites for Sass/Compass](http://www.hagenburger.net/BLOG/Lemonade-CSS-Sprites-for-Sass-Compass.html) or have a look at the presentation [3 steps to make better and faster frontends](http://www.slideshare.net/hagenburger/3-steps-to-make-better-faster-frontends) (slides 23—37).
+Please read my [blog post on CSS sprites for Sass/Compass](http://www.hagenburger.net/BLOG/Lemonade-CSS-Sprites-for-Sass-Compass.html) or have a look at the presentation [3 steps to make better and faster frontends](http://www.hagenburger.net/BLOG/3-Steps-to-Make-Better-And-Faster-Frontends.html) (slides 23—37).
 
 
 **Usage ([SCSS or Sass](http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html)):**
