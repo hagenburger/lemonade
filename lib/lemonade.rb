@@ -51,15 +51,16 @@ module Compass
   end
 end
 
+
+require 'sass'
+require 'sass/plugin'
+
 module Sass
-  class Engine
-    alias_method :render_without_lemonade, :render
-    def render
-      if result = render_without_lemonade
-        Lemonade::generate_sprites
-        result
-      end
+  module Plugin
+    alias update_stylesheets_without_lemonade update_stylesheets
+    def update_stylesheets(*args)
+      update_stylesheets_without_lemonade(*args)
+      Lemonade::generate_sprites
     end
-    alias_method :to_css, :render
   end
 end
