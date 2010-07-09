@@ -13,6 +13,7 @@ module Lemonade::SassExtensions::Functions::Lemonade
         :height => 0,
         :width => 0,
         :images => [],
+        :css_filenames => [],
         :margin_bottom => 0
       }
 
@@ -28,6 +29,8 @@ module Lemonade::SassExtensions::Functions::Lemonade
       sprite[:width] = width if width > sprite[:width]
       sprite[:images] << { :file => filestr, :height => height, :width => width, :x => x, :y => y }
     end
+    
+    sprite[:css_filenames] |= [options[:css_filename]]
     
     position = background_position(0, y, add_x, add_y)
     output_file = image_url(Sass::Script::String.new("#{ dir }#{ name }.png"))

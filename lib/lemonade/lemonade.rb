@@ -2,6 +2,7 @@ require 'yaml'
 
 module Lemonade
   def self.generate_sprites
+    affected_css_filenames = []
     if $lemonade_sprites
       $lemonade_sprites.each do |sprite_name, sprite|
         if sprite_changed?(sprite_name, sprite)
@@ -17,10 +18,12 @@ module Lemonade
           sprite_image.save file
 
           remember_sprite_info!(sprite_name, sprite)
+          affected_css_filenames |= sprite[:css_filenames]
         end
       end
       $lemonade_sprites = nil
     end
+    affected_css_filenames
   end
 
 

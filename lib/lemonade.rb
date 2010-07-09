@@ -46,7 +46,10 @@ module Compass
     alias_method :compile_without_lemonade, :compile
     def compile(sass_filename, css_filename)
       compile_without_lemonade sass_filename, css_filename
-      Lemonade::generate_sprites
+      affected_css_filenames = Lemonade::generate_sprites
+      if affected_css_filenames.include? css_filename
+        compile_without_lemonade sass_filename, css_filename
+      end
     end
   end
 end
@@ -60,7 +63,11 @@ module Sass
     alias update_stylesheets_without_lemonade update_stylesheets
     def update_stylesheets(*args)
       update_stylesheets_without_lemonade(*args)
-      Lemonade::generate_sprites
+      affected_css_filenames = Lemonade::generate_sprites
+      unless affected_css_filenames.empty?
+        File.utime 0, 0, *affected_css_filenames
+        update_stylesheets_without_lemonade(*args)
+      end
     end
   end
 end
