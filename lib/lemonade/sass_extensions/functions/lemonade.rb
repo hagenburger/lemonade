@@ -29,6 +29,12 @@ module Lemonade::SassExtensions::Functions::Lemonade
       sprite[:images] << { :file => filestr, :height => height, :width => width, :x => x, :y => y }
     end
     
+    file = File.join(Compass.configuration.images_path, "#{dir}#{name}.png")
+    unless File.exist? file
+      FileUtils.touch file
+      File.utime 0, 0, file
+    end
+    
     position = background_position(0, y, add_x, add_y)
     output_file = image_url(Sass::Script::String.new("#{ dir }#{ name }.png"))
     Sass::Script::String.new("#{ output_file }#{ position }")
