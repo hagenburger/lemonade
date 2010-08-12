@@ -1,4 +1,4 @@
-module Lemonade::SassExtensions::Functions::Lemonade
+module Sass::Script::Functions
 
   def sprite_image(file, add_x = nil, add_y = nil, margin_top_or_both = nil, margin_bottom = nil)
     assert_type file, :String
@@ -8,8 +8,7 @@ module Lemonade::SassExtensions::Functions::Lemonade
     dir, name, filename = $1, $2, $3
     filestr = file.to_s.gsub('"', '')
 
-    $lemonade_sprites ||= {}
-    sprite = $lemonade_sprites["#{ dir }/#{ name }"] ||= {
+    sprite = Lemonade.sprites["#{ dir }/#{ name }"] ||= {
         :height => 0,
         :width => 0,
         :images => [],

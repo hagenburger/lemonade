@@ -1,10 +1,9 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
-describe Lemonade::SassExtensions::Functions::Lemonade do
+describe Lemonade::SassExtension do
   before :each do
     @sass = Sass::Environment.new
-    $lemonade_sprites = nil
-    $lemonade_margin_bottom = nil
+    Lemonade.sprites.clear
     FileUtils.cp_r File.dirname(__FILE__) + '/images', IMAGES_TMP_PATH
   end
   
@@ -13,7 +12,7 @@ describe Lemonade::SassExtensions::Functions::Lemonade do
   end
   
   def image_size(file)
-    Lemonade::generate_sprites
+    Lemonade.generate_sprites
     IO.read(IMAGES_TMP_PATH + '/' + file)[0x10..0x18].unpack('NN')
   end
   
