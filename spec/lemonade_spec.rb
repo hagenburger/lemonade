@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
-describe Lemonade::SassExtension do
+describe "Lemonade Sass Functions" do
   before :each do
     @sass = Sass::Environment.new
     Lemonade.sprites.clear
