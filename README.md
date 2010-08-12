@@ -123,6 +123,16 @@ If you want to use Lemonade with Rails 3 Please use this compass and haml versio
     gem 'haml-edge',   '3.1.49', :require => 'haml'
 
 
+Contributors
+------------
+
+* [Jay Mead](http://github.com/Op4G) ([twitter](http://twitter.com/Jay Mead))
+* [Jason Weathered](http://github.com/jasoncodes) ([twitter](http://twitter.com/jasoncodes))
+* [Tobias Kraze](http://github.com/kratob)
+* [Sebastian Deutsch](http://github.com/sebastiandeutsch) ([twitter](http://twitter.com/sippndipp))
+* [Nico Hagenburger](http://github.com/hagenburger) ([twitter](http://twitter.com/hagenburger))
+
+
 Copyright
 ---------
 
