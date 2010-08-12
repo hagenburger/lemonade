@@ -1,73 +1,91 @@
+require 'chunky_png'
+
 module Lemonade
-  module SassExtensions
-    module Functions
+  @@sprites, @@sprites_path, @@images_path = {}, nil, nil
+
+  class << self
+    def sprites
+      @@sprites
+    end
+
+    def sprites_path
+      @@sprites_path || images_path
+    end
+
+    def sprites_dir=(path)
+      @@sprites_path = path
+    end
+
+    def images_path
+      @@images_path || defined?(Compass) ? Compass.configuration.images_path : 'public/images'
+    end
+
+    def images_dir=(path)
+      @@images_path = path
+    end
+
+    def generate_sprites
+      sprites.each do |sprite_name, sprite|
+        sprite_image = ChunkyPNG::Image.new(sprite[:width], sprite[:height], ChunkyPNG::Color::TRANSPARENT)
+
+        sprite[:images].each do |image|
+          single_image  = ChunkyPNG::Image.from_file(image[:file])
+          x = (sprite[:width] - image[:width]) * image[:x]
+          sprite_image.replace single_image, x, image[:y]
+        end
+
+        sprite_image.save File.join(Lemonade.images_path, "#{ sprite_name }.png")
+      end
+
+      # sprites.clear
+    end
+
+    def extend_sass!
+      require 'sass'
+      require 'sass/plugin'
+      require File.expand_path('../lemonade/sass_functions', __FILE__)
+      require File.expand_path('../lemonade/sass_extension', __FILE__)
+    end
+    
+    def sprite_info_file(sprite_name)
+      File.join(Compass.configuration.images_path, "#{sprite_name}.sprite_info.yml")
+    end
+
+    def sprite_changed?(sprite_name, sprite)
+      existing_sprite_info = YAML.load(File.read(sprite_info_file(sprite_name)))
+      existing_sprite_info[:sprite] != sprite or existing_sprite_info[:timestamps] != timestamps(sprite) 
+    rescue
+      true
+    end
+
+    def remember_sprite_info!(sprite_name, sprite)
+      File.open(sprite_info_file(sprite_name), 'w') do |file|
+        file << {
+          :sprite => sprite,
+          :timestamps => timestamps(sprite),
+        }.to_yaml
+      end
+    end
+
+    def timestamps(sprite)
+      result = {}
+      sprite[:images].each do |image|
+        file_name = image[:file]
+        result[file_name] = File.ctime(File.join(Compass.configuration.images_path, file_name))
+      end
+      result
     end
   end
 end
 
-
-
-
-require 'rubygems'
-require 'compass'
-
+require File.expand_path('../lemonade/compass_extension', __FILE__) if defined?(Compass)
 
 # Rails 3.0.0.beta.2+
 if defined?(ActiveSupport) && Haml::Util.has?(:public_method, ActiveSupport, :on_load)
-  require 'haml/template/options'
-  require 'sass/plugin/configuration'
-  ActiveSupport.on_load(:before_initialize) do
-    require 'sass'
-    require 'sass/plugin'
-
-    module Sass
-      module Plugin
-        alias_method :update_stylesheets_without_lemonade, :update_stylesheets
-        def update_stylesheets
-          if update_stylesheets_without_lemonade
-            Lemonade::generate_sprites
-          end
-        end
-      end
-    end
-  end
+  # require 'haml/template/options'
+  # require 'sass/plugin/configuration'
+  ActiveSupport.on_load(:before_initialize) { Lemonade.extend_sass! }
+else
+  Lemonade.extend_sass!
 end
 
-require 'chunky_png'
-require File.dirname(__FILE__) + '/lemonade/sass_extensions/functions/lemonade'
-require File.dirname(__FILE__) + '/lemonade/lemonade'
-
-module Sass::Script::Functions
-  include Lemonade::SassExtensions::Functions::Lemonade
-end
-
-module Compass
-  class Compiler
-    alias_method :compile_without_lemonade, :compile
-    def compile(sass_filename, css_filename)
-      compile_without_lemonade sass_filename, css_filename
-      affected_css_filenames = Lemonade::generate_sprites
-      if affected_css_filenames.include? css_filename
-        compile_without_lemonade sass_filename, css_filename
-      end
-    end
-  end
-end
-
-
-require 'sass'
-require 'sass/plugin'
-
-module Sass
-  module Plugin
-    alias update_stylesheets_without_lemonade update_stylesheets
-    def update_stylesheets(*args)
-      update_stylesheets_without_lemonade(*args)
-      affected_css_filenames = Lemonade::generate_sprites
-      unless affected_css_filenames.empty?
-        File.utime 0, 0, *affected_css_filenames
-        update_stylesheets_without_lemonade(*args)
-      end
-    end
-  end
-end
