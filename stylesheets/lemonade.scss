@@ -3,12 +3,12 @@
   width: image-width($file);
 }
 
-@mixin sprite-image($file, $repeat: no-repeat) {
+@mixin sprite-image($file) {
   background: sprite-image($file) $repeat;
 }
 
 @mixin sized-sprite-image($file) {
-  @include sprite-image($file, "");
+  background: sprite-image($file);  
   @include image-dimensions($file);
 }
 
