@@ -121,11 +121,29 @@ describe "Lemonade Sass Functions" do
   end
   
   it "should output the background-image URL" do
+    evaluate('sprite-url("sprites")').should == "url('/sprites.png')"
     evaluate('sprite-url("sprites/10x10.png")').should == "url('/sprites.png')"
     evaluate('sprite-url("sprites/20x20.png")').should == "url('/sprites.png')"
     evaluate('sprite-url("other_images/test.png")').should == "url('/other_images.png')"
   end
   
+  it "should count the PNG files in a folder" do
+    evaluate('sprite-files-in-folder("sprites")').to_i.should == 4
+  end
+  
+  it "should output the n-th file in a folder" do
+    evaluate('sprite-file-from-folder("sprites", 0)').should == "sprites/10x10.png"
+    evaluate('sprite-file-from-folder("sprites", 1)').should == "sprites/150x10.png"
+  end
+  
+  it "should output the filename without extention" do
+    evaluate('sprite-name("sprites")').should == "sprites"
+    evaluate('sprite-name("sprites/10x10.png")').should == "sprites"
+  end
+  
+  it "should output the filename without extention" do
+    evaluate('image-basename("sprites/10x10.png")').should == "10x10"
+  end
 end
 
 

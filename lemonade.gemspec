@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.extra_rdoc_files = ['README.md']
   s.rdoc_options = ['--charset=UTF-8']
 
-  s.files = Dir["lib/**/*"] + %w(CHANGELOG.md MIT-LICENSE Rakefile README.md)
+  s.files = Dir["lib/**/*"] + Dir["stylesheets/**/*"] + %w(CHANGELOG.md MIT-LICENSE Rakefile README.md)
   s.test_files = Dir['spec/**/*']
   s.require_path = 'lib'
 

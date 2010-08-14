@@ -80,7 +80,9 @@ end
 
 if defined?(Compass)
   require File.expand_path('../lemonade/compass_extension', __FILE__)
-  Compass::Frameworks.register('lemonade')
+  base_directory  = File.join(File.dirname(__FILE__), '..')
+  stylesheets_dir = File.join(base_directory, 'stylesheets')
+  Compass::Frameworks.register('lemonade', :path => base_directory, )
 end
 
 # Rails 3.0.0.beta.2+
