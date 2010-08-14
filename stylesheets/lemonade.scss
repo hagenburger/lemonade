@@ -1,0 +1,6 @@
+@mixin sprite-image($file) {
+  background: sprite-image($file);
+  height: image-height($file);
+  width: image-width($file);
+}
+

@@ -78,7 +78,10 @@ module Lemonade
   end
 end
 
-require File.expand_path('../lemonade/compass_extension', __FILE__) if defined?(Compass)
+if defined?(Compass)
+  require File.expand_path('../lemonade/compass_extension', __FILE__)
+  Compass::Frameworks.register('lemonade')
+end
 
 # Rails 3.0.0.beta.2+
 if defined?(ActiveSupport) && Haml::Util.has?(:public_method, ActiveSupport, :on_load)
