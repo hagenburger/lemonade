@@ -5,12 +5,12 @@ require File.expand_path('../lib/lemonade/version', __FILE__)
 Gem::Specification.new do |s|
   s.name = 'lemonade'
   s.version = Lemonade::Version
-  s.date = '2010-07-04'
+  s.date = Time.now.strftime '%Y-%m-%d'
 
   s.required_rubygems_version = '>= 1.3.6'
   s.authors = ['Nico Hagenburger']
   s.email = 'gems@hagenburger.net'
- s.homepage = 'http://github.com/hagenburger/lemonade'
+  s.homepage = 'http://github.com/hagenburger/lemonade'
   s.summary = 'On the fly sprite generator for Sass/Compass'
   s.description = %q{Generates sprites on the fly by using `background: sprite-image("sprites/logo.png")`. No Photoshop, no RMagick, no Rake task, save your time and have a lemonade.}
 

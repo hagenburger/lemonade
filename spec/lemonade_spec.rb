@@ -115,6 +115,17 @@ describe "Lemonade Sass Functions" do
     image_size('sprites.png').should == [20, 30]
   end
   
+  it "should output the background-position" do
+    evaluate('sprite-position("sprites/10x10.png")').should == "0 0"
+    evaluate('sprite-position("sprites/20x20.png")').should == "0 -10px"
+  end
+  
+  it "should output the background-image URL" do
+    evaluate('sprite-url("sprites/10x10.png")').should == "url('/sprites.png')"
+    evaluate('sprite-url("sprites/20x20.png")').should == "url('/sprites.png')"
+    evaluate('sprite-url("other_images/test.png")').should == "url('/other_images.png')"
+  end
+  
 end
 
 
