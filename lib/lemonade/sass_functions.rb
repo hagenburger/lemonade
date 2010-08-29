@@ -2,18 +2,18 @@ module Sass::Script::Functions
 
   def sprite_url(file)
     dir, name, basename = extract_names(file)
-    generic_image_url("#{dir}#{name}.png")
+    sprite = sprite_for("#{dir}#{name}")
+    Sass::Script::SpriteInfo.new(:url, sprite)
   end
 
-  def sprite_position(*args)
-    url, position = sprite_url_and_position(*args)
-    position
+  def sprite_position(file, position_x = nil, position_y_shift = nil, margin_top_or_both = nil, margin_bottom = nil)
+    sprite, sprite_item = sprite_url_and_position(file, position_x, position_y_shift, margin_top_or_both, margin_bottom)
+    Sass::Script::SpriteInfo.new(:position, sprite, sprite_item, position_x, position_y_shift)
   end
 
-  def sprite_image(*args)
-    url, position = sprite_url_and_position(*args)
-    position = '0 0' == position.to_s ? '' : " #{position}"
-    Sass::Script::String.new("#{url}#{position}")
+  def sprite_image(file, position_x = nil, position_y_shift = nil, margin_top_or_both = nil, margin_bottom = nil)
+    sprite, sprite_item = sprite_url_and_position(file, position_x, position_y_shift, margin_top_or_both, margin_bottom)
+    Sass::Script::SpriteInfo.new(:both, sprite, sprite_item, position_x, position_y_shift)
   end
   alias_method :sprite_img, :sprite_image
 
@@ -48,43 +48,29 @@ private
     Dir.glob(File.join(dir, '*.png')).sort
   end
 
-  def sprite_url_and_position(file, add_x = nil, add_y = nil, margin_top_or_both = nil, margin_bottom = nil)
+  def sprite_url_and_position(file, position_x = nil, position_y_shift = nil, margin_top_or_both = nil, margin_bottom = nil)
     dir, name, basename = extract_names(file, :check_file => true)
     filestr = File.join(Lemonade.sprites_path, file.value)
 
-    sprite = sprite_for("#{dir}/#{name}")
-    image = image_for(sprite, filestr, add_x, add_y, margin_top_or_both, margin_bottom)
+    sprite = sprite_for("#{dir}#{name}")
+    sprite_item = image_for(sprite, filestr, position_x, position_y_shift, margin_top_or_both, margin_bottom)
 
     # Create a temporary destination file so compass doesn't complain about a missing image
     FileUtils.touch File.join(Lemonade.images_path, "#{dir}#{name}.png")
 
-    [generic_image_url("#{dir}#{name}.png"), background_position(-image[:y], add_x, add_y)]
+    [sprite, sprite_item]
   end
 
   def extract_names(file, options = {})
     assert_type file, :String
     unless (file.value =~ %r(^(.+/)?([^\.]+?)(/(.+?)\.(png))?$)) == 0
-      raise Sass::SyntaxError, "1:#{file}:"+'Please provide a file in a folder: e.g. sprites/button.png'
+      raise Sass::SyntaxError, 'Please provide a file in a folder: e.g. sprites/button.png'
     end
     dir, name, basename = $1, $2, $4
     if options[:check_file] and basename.nil?
-      raise Sass::SyntaxError, "2:#{file}:"+'Please provide a file in a folder: e.g. sprites/button.png'
+      raise Sass::SyntaxError, 'Please provide a file in a folder: e.g. sprites/button.png'
     end
     [dir, name, basename]
-  end
-
-  def generic_image_url(image)
-    if defined?(Compass)
-      image_url(Sass::Script::String.new(image))
-    else
-      Sass::Script::String.new("url(#{image.inspect})")
-    end
-  end
-
-  def background_position(y, add_x, add_y)
-    x = add_x ? add_x.to_s : 0
-    y += add_y.value if add_y
-    Sass::Script::String.new("#{x} #{y}#{ 'px' unless y == 0 }")
   end
 
   def calculate_margin_top(sprite, margin_top_or_both, margin_bottom)
@@ -96,6 +82,7 @@ private
 
   def sprite_for(file)
     Lemonade.sprites[file] ||= {
+        :file => "#{file}.png",
         :height => 0,
         :width => 0,
         :images => [],
@@ -103,12 +90,13 @@ private
       }
   end
 
-  def image_for(sprite, file, add_x, add_y, margin_top_or_both, margin_bottom)
+  def image_for(sprite, file, position_x, position_y_shift, margin_top_or_both, margin_bottom)
     unless image = sprite[:images].detect{ |image| image[:file] == file }
       width, height = ChunkyPNG::Image.from_file(file).size
       margin_top = calculate_margin_top(sprite, margin_top_or_both, margin_bottom)
-      x = (add_x and add_x.numerator_units == %w(%)) ? add_x.value / 100 : 0
+      x = (position_x and position_x.numerator_units == %w(%)) ? position_x : Sass::Script::Number.new(0)
       y = sprite[:height] + margin_top
+      y = Sass::Script::Number.new(y, y == 0 ? [] : ['px'])
       sprite[:height] += height + margin_top
       sprite[:width] = width if width > sprite[:width]
       image = { :file => file, :height => height, :width => width, :x => x, :y => y }
@@ -120,4 +108,5 @@ private
   rescue ChunkyPNG::SignatureMismatch
     raise Sass::SyntaxError, "#{file} is not a recognized png file, can't use for sprite creation"
   end
+
 end

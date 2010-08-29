@@ -1,9 +1,13 @@
 require 'chunky_png'
+require 'lemonade/sprite_info.rb'
 
 module Lemonade
-  @@sprites, @@sprites_path, @@images_path = {}, nil, nil
+  @@sprites = {}
+  @@sprites_path = nil
+  @@images_path = nil
 
   class << self
+
     def sprites
       @@sprites
     end
@@ -12,7 +16,7 @@ module Lemonade
       @@sprites_path || images_path
     end
 
-    def sprites_dir=(path)
+    def sprites_path=(path)
       @@sprites_path = path
     end
 
@@ -20,8 +24,12 @@ module Lemonade
       @@images_path || defined?(Compass) ? Compass.configuration.images_path : 'public/images'
     end
 
-    def images_dir=(path)
+    def images_path=(path)
       @@images_path = path
+    end
+
+    def reset
+      @@sprites = {}
     end
 
     def generate_sprites
@@ -30,14 +38,12 @@ module Lemonade
 
         sprite[:images].each do |image|
           single_image  = ChunkyPNG::Image.from_file(image[:file])
-          x = (sprite[:width] - image[:width]) * image[:x]
-          sprite_image.replace single_image, x, image[:y]
+          x = (sprite[:width] - image[:width]) * image[:x].value / 100
+          sprite_image.replace single_image, x, image[:y].value
         end
 
         sprite_image.save File.join(Lemonade.images_path, "#{ sprite_name }.png")
       end
-
-      # sprites.clear
     end
 
     def extend_sass!
@@ -46,14 +52,14 @@ module Lemonade
       require File.expand_path('../lemonade/sass_functions', __FILE__)
       require File.expand_path('../lemonade/sass_extension', __FILE__)
     end
-    
+
     def sprite_info_file(sprite_name)
       File.join(Compass.configuration.images_path, "#{sprite_name}.sprite_info.yml")
     end
 
     def sprite_changed?(sprite_name, sprite)
       existing_sprite_info = YAML.load(File.read(sprite_info_file(sprite_name)))
-      existing_sprite_info[:sprite] != sprite or existing_sprite_info[:timestamps] != timestamps(sprite) 
+      existing_sprite_info[:sprite] != sprite or existing_sprite_info[:timestamps] != timestamps(sprite)
     rescue
       true
     end
@@ -75,7 +81,9 @@ module Lemonade
       end
       result
     end
+
   end
+
 end
 
 if defined?(Compass)
