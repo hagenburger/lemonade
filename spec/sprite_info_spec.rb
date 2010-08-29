@@ -12,12 +12,19 @@ describe Sass::Script::SpriteInfo do
 
   ##
 
-  it "should output the position" do
+  it "should output the position for the first sprite" do
     sprite = { :file => "sprites.png" }
     sprite_item = { :y => Sass::Script::Number.new(20, ['px']), :index => 0 }
     x = Sass::Script::Number.new(10, ['px'])
+    sprite_info(:position, sprite, sprite_item, x).should == "10px 0"
+  end
+
+  it "should output the position for the second+ sprite" do
+    sprite = { :file => "sprites.png" }
+    sprite_item = { :y => Sass::Script::Number.new(20, ['px']), :index => 1 }
+    x = Sass::Script::Number.new(10, ['px'])
     sprite_info(:position, sprite, sprite_item, x).should == 
-      "10px <%= Lemonade.sprites['sprites.png'][:images][0][:y].unary_minus %>"
+      "10px <%= Lemonade.sprites['sprites.png'][:images][1][:y].unary_minus %>"
   end
 
   it "should output the position with y shift" do

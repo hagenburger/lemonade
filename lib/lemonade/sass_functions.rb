@@ -74,13 +74,6 @@ private
     [dir, name, basename]
   end
 
-  def calculate_margin_top(sprite, margin_top_or_both, margin_bottom)
-    margin_top_or_both = margin_top_or_both ? margin_top_or_both.value : 0
-    margin_top = (sprite[:margin_bottom] ||= 0) > margin_top_or_both ? sprite[:margin_bottom] : margin_top_or_both
-    sprite[:margin_bottom] = margin_bottom ? margin_bottom.value : margin_top_or_both
-    margin_top
-  end
-
   def sprite_for(file)
     file = "#{file}.png" unless file =~ /\.png$/
     Lemonade.sprites[file] ||= {
@@ -93,15 +86,27 @@ private
   end
 
   def image_for(sprite, file, position_x, position_y_shift, margin_top_or_both, margin_bottom)
-    unless image = sprite[:images].detect{ |image| image[:file] == file }
+    image = sprite[:images].detect{ |image| image[:file] == file }
+    margin_top_or_both ||= Sass::Script::Number.new(0)
+    margin_top = margin_top_or_both.value #calculate_margin_top(sprite, margin_top_or_both, margin_bottom)
+    margin_bottom = (margin_bottom || margin_top_or_both).value
+    if image
+      image[:margin_top] = margin_top if margin_top > image[:margin_top]
+      image[:margin_bottom] = margin_bottom if margin_bottom > image[:margin_bottom]
+    else
       width, height = ChunkyPNG::Image.from_file(file).size
-      margin_top = calculate_margin_top(sprite, margin_top_or_both, margin_bottom)
       x = (position_x and position_x.numerator_units == %w(%)) ? position_x : Sass::Script::Number.new(0)
       y = sprite[:height] + margin_top
       y = Sass::Script::Number.new(y, y == 0 ? [] : ['px'])
-      sprite[:height] += height + margin_top
-      sprite[:width] = width if width > sprite[:width]
-      image = { :file => file, :height => height, :width => width, :x => x, :y => y, :index => sprite[:images].length }
+      image = {
+        :file => file,
+        :height => height,
+        :width => width,
+        :x => x,
+        :margin_top => margin_top,
+        :margin_bottom => margin_bottom,
+        :index => sprite[:images].length
+      }
       sprite[:images] << image
     end
     image

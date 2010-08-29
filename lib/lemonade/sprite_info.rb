@@ -40,9 +40,7 @@ module Sass::Script
 
     def position
       x = @position_x || 0
-      y = @sprite_item[:y].times(Sass::Script::Number.new(-1))
-      y = y.plus(@position_y_shift) if @position_y_shift
-      if y.value == 0 and (@position_y_shift.nil? or @position_y_shift.value == 0)
+      if @sprite_item[:index] == 0 and (@position_y_shift.nil? or @position_y_shift.value == 0)
         "#{x.inspect} 0"
       else
         expression  = "Lemonade.sprites['#{@sprite[:file]}'][:images][#{@sprite_item[:index]}][:y].unary_minus"

@@ -153,6 +153,32 @@ describe Sass::Script::Functions do
     image_size('sprites.png').should == [20, 30]
   end
 
+  it "should calculate the maximum spacing between images" do
+    evaluate(
+      'sprite-image("sprites/10x10.png")',
+      'sprite-image("sprites/20x20.png", 0, 0, 10px)',
+      'sprite-image("sprites/20x20.png", 0, 0, 99px)' # 99px > 10px
+    ).should == [
+      "url('/sprites.png')",
+      "url('/sprites.png') 0 -109px", # use 99px spacing
+      "url('/sprites.png') 0 -109px"
+    ]
+    image_size('sprites.png').should == [20, 129]
+  end
+
+  it "should calculate the maximum spacing between images for margin bottom" do
+    evaluate(
+      'sprite-image("sprites/10x10.png", 0, 0, 0, 10px)',
+      'sprite-image("sprites/10x10.png", 0, 0, 0, 99px)', # 99px > 10px
+      'sprite-image("sprites/20x20.png")',
+    ).should == [
+      "url('/sprites.png')",
+      "url('/sprites.png')",
+      "url('/sprites.png') 0 -109px" # use 99px spacing
+    ]
+    image_size('sprites.png').should == [20, 129]
+  end
+
   it "should output the background-position" do
     evaluate(
       'sprite-position("sprites/10x10.png")',
@@ -179,12 +205,12 @@ describe Sass::Script::Functions do
     evaluate('sprite-file-from-folder("sprites", 1)').should == "sprites/150x10.png"
   end
 
-  it "should output the filename without extention" do
+  it "should output the filename without extention for the sprite" do
     evaluate('sprite-name("sprites")').should == "sprites"
     evaluate('sprite-name("sprites/10x10.png")').should == "sprites"
   end
 
-  it "should output the filename without extention" do
+  it "should output the filename without extention for the sprite item" do
     evaluate('image-basename("sprites/10x10.png")').should == "10x10"
   end
 

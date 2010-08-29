@@ -34,15 +34,8 @@ module Lemonade
 
     def generate_sprites
       sprites.each do |sprite_name, sprite|
-        sprite_image = ChunkyPNG::Image.new(sprite[:width], sprite[:height], ChunkyPNG::Color::TRANSPARENT)
-
-        sprite[:images].each do |image|
-          single_image  = ChunkyPNG::Image.from_file(image[:file])
-          x = (sprite[:width] - image[:width]) * image[:x].value / 100
-          sprite_image.replace single_image, x, image[:y].value
-        end
-
-        sprite_image.save File.join(Lemonade.images_path, "#{sprite_name}")
+        calculate_sprite sprite
+        generate_sprite_image sprite
       end
     end
 
@@ -77,6 +70,8 @@ module Lemonade
         }.to_yaml
       end
     end
+  
+  private
 
     def timestamps(sprite)
       result = {}
@@ -85,6 +80,37 @@ module Lemonade
         result[file_name] = File.ctime(File.join(Compass.configuration.images_path, file_name))
       end
       result
+    end
+    
+    def calculate_sprite(sprite)
+      width, margin_bottom, y = 0, 0, 0
+      sprite[:images].each do |sprite_item|
+        if sprite_item[:index] == 0
+          margin_top = 0
+        elsif sprite_item[:margin_top] > margin_bottom
+          margin_top = sprite_item[:margin_top]
+        else
+          margin_top = margin_bottom
+        end
+        y += margin_top
+        sprite_item[:y] = Sass::Script::Number.new(y, ['px'])
+        y += sprite_item[:height]
+        width = sprite_item[:width] if sprite_item[:width] > width
+        margin_bottom = sprite_item[:margin_bottom]
+      end
+      sprite[:height] = y
+      sprite[:width] = width
+    end
+    
+    def generate_sprite_image(sprite)
+      sprite_image = ChunkyPNG::Image.new(sprite[:width], sprite[:height], ChunkyPNG::Color::TRANSPARENT)
+      sprite[:images].each do |sprite_item|
+        sprite_item_image  = ChunkyPNG::Image.from_file(sprite_item[:file])
+        x = (sprite[:width] - sprite_item[:width]) * (sprite_item[:x].value / 100)
+        y = sprite_item[:y].value
+        sprite_image.replace sprite_item_image, x, y
+      end
+      sprite_image.save File.join(Lemonade.images_path, sprite[:file])
     end
 
   end
