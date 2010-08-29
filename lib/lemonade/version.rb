@@ -1,3 +1,3 @@
 module Lemonade
-  Version = "0.3.4"
+  Version = "1.0.0.beta.1"
 end
