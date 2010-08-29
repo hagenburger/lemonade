@@ -42,7 +42,7 @@ module Lemonade
           sprite_image.replace single_image, x, image[:y].value
         end
 
-        sprite_image.save File.join(Lemonade.images_path, "#{ sprite_name }.png")
+        sprite_image.save File.join(Lemonade.images_path, "#{sprite_name}")
       end
     end
 
@@ -51,6 +51,11 @@ module Lemonade
       require 'sass/plugin'
       require File.expand_path('../lemonade/sass_functions', __FILE__)
       require File.expand_path('../lemonade/sass_extension', __FILE__)
+    end
+    
+    def extend_compass!
+      base_directory  = File.join(File.dirname(__FILE__), '..')
+      Compass::Frameworks.register('lemonade', :path => base_directory)
     end
 
     def sprite_info_file(sprite_name)
@@ -86,17 +91,17 @@ module Lemonade
 
 end
 
+
 if defined?(Compass)
-  require File.expand_path('../lemonade/compass_extension', __FILE__)
-  base_directory  = File.join(File.dirname(__FILE__), '..')
-  Compass::Frameworks.register('lemonade', :path => base_directory)
+  Lemonade.extend_compass!
 end
 
-# Rails 3.0.0.beta.2+
-if defined?(ActiveSupport) && Haml::Util.has?(:public_method, ActiveSupport, :on_load)
-  # require 'haml/template/options'
-  # require 'sass/plugin/configuration'
-  ActiveSupport.on_load(:before_initialize) { Lemonade.extend_sass! }
+
+if defined?(ActiveSupport) and Haml::Util.has?(:public_method, ActiveSupport, :on_load)
+  # Rails 3.0
+  ActiveSupport.on_load :before_initialize do
+    Lemonade.extend_sass!
+  end
 else
   Lemonade.extend_sass!
 end

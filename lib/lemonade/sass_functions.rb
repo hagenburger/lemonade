@@ -52,11 +52,12 @@ private
     dir, name, basename = extract_names(file, :check_file => true)
     filestr = File.join(Lemonade.sprites_path, file.value)
 
-    sprite = sprite_for("#{dir}#{name}")
+    sprite_file = "#{dir}#{name}.png"
+    sprite = sprite_for(sprite_file)
     sprite_item = image_for(sprite, filestr, position_x, position_y_shift, margin_top_or_both, margin_bottom)
 
     # Create a temporary destination file so compass doesn't complain about a missing image
-    FileUtils.touch File.join(Lemonade.images_path, "#{dir}#{name}.png")
+    FileUtils.touch File.join(Lemonade.images_path, sprite_file)
 
     [sprite, sprite_item]
   end
@@ -81,8 +82,9 @@ private
   end
 
   def sprite_for(file)
+    file = "#{file}.png" unless file =~ /\.png$/
     Lemonade.sprites[file] ||= {
-        :file => "#{file}.png",
+        :file => "#{file}",
         :height => 0,
         :width => 0,
         :images => [],
@@ -99,7 +101,7 @@ private
       y = Sass::Script::Number.new(y, y == 0 ? [] : ['px'])
       sprite[:height] += height + margin_top
       sprite[:width] = width if width > sprite[:width]
-      image = { :file => file, :height => height, :width => width, :x => x, :y => y }
+      image = { :file => file, :height => height, :width => width, :x => x, :y => y, :index => sprite[:images].length }
       sprite[:images] << image
     end
     image

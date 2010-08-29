@@ -114,9 +114,15 @@ describe Sass::Script::Functions do
   end
 
   it "should calculate empty space correctly when 2 output images are uses" do
-    evaluate('sprite-image("sprites/10x10.png", 0, 0, 0, 30px)').should == "url('/sprites.png')"
-    evaluate('sprite-image("other_images/test.png")').should == "url('/other_images.png')"
-    evaluate('sprite-image("sprites/20x20.png", 0, 0, 20px, 5px)').should == "url('/sprites.png') 0 -40px"
+    evaluate(
+      'sprite-image("sprites/10x10.png", 0, 0, 0, 30px)',
+      'sprite-image("other_images/test.png")',
+      'sprite-image("sprites/20x20.png", 0, 0, 20px, 5px)'
+    ).should == [
+      "url('/sprites.png')",
+      "url('/other_images.png')",
+      "url('/sprites.png') 0 -40px"
+    ]
   end
 
   it "should allow % for x positions" do
@@ -148,8 +154,13 @@ describe Sass::Script::Functions do
   end
 
   it "should output the background-position" do
-    evaluate('sprite-position("sprites/10x10.png")').should == "0 0"
-    evaluate('sprite-position("sprites/20x20.png")').should == "0 -10px"
+    evaluate(
+      'sprite-position("sprites/10x10.png")',
+      'sprite-position("sprites/20x20.png")'
+    ).should == [
+      "0 0",
+      "0 -10px"
+    ]
   end
 
   it "should output the background-image URL" do
