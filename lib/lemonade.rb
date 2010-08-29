@@ -35,7 +35,10 @@ module Lemonade
     def generate_sprites
       sprites.each do |sprite_name, sprite|
         calculate_sprite sprite
-        generate_sprite_image sprite
+        if sprite_changed?(sprite_name, sprite)
+          generate_sprite_image sprite
+          remember_sprite_info! sprite_name, sprite
+        end
       end
     end
 
@@ -50,10 +53,8 @@ module Lemonade
       base_directory  = File.join(File.dirname(__FILE__), '..')
       Compass::Frameworks.register('lemonade', :path => base_directory)
     end
-
-    def sprite_info_file(sprite_name)
-      File.join(Compass.configuration.images_path, "#{sprite_name}.sprite_info.yml")
-    end
+  
+  private
 
     def sprite_changed?(sprite_name, sprite)
       existing_sprite_info = YAML.load(File.read(sprite_info_file(sprite_name)))
@@ -70,14 +71,16 @@ module Lemonade
         }.to_yaml
       end
     end
-  
-  private
+
+    def sprite_info_file(sprite_name)
+      File.join(Compass.configuration.images_path, "#{sprite_name}.sprite_info.yml")
+    end
 
     def timestamps(sprite)
       result = {}
       sprite[:images].each do |image|
         file_name = image[:file]
-        result[file_name] = File.ctime(File.join(Compass.configuration.images_path, file_name))
+        result[file_name] = File.ctime(file_name)
       end
       result
     end
