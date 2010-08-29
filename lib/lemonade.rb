@@ -53,8 +53,6 @@ module Lemonade
       base_directory  = File.join(File.dirname(__FILE__), '..')
       Compass::Frameworks.register('lemonade', :path => base_directory)
     end
-  
-  private
 
     def sprite_changed?(sprite_name, sprite)
       existing_sprite_info = YAML.load(File.read(sprite_info_file(sprite_name)))
@@ -71,6 +69,8 @@ module Lemonade
         }.to_yaml
       end
     end
+  
+  private
 
     def sprite_info_file(sprite_name)
       File.join(Compass.configuration.images_path, "#{sprite_name}.sprite_info.yml")
