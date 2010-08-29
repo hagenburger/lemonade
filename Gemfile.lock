@@ -1,14 +1,14 @@
 PATH
   remote: .
   specs:
-    lemonade (0.3.4)
-      chunky_png (>= 0.8.0)
-      haml (>= 3.0.0)
+    lemonade (1.0.0.beta.1)
+      chunky_png (~> 0.9.0)
+      haml (~> 3.0.0)
 
 GEM
   remote: http://rubygems.org/
   specs:
-    chunky_png (0.8.0)
+    chunky_png (0.9.0)
     compass (0.10.4)
       haml (>= 3.0.4)
     haml (3.0.16)
@@ -19,9 +19,9 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  chunky_png (>= 0.8.0)
-  compass (>= 0.10.0)
-  haml (>= 3.0.0)
+  chunky_png (~> 0.9.0)
+  compass (~> 0.10.0)
+  haml (~> 3.0.0)
   lemonade!
-  rake (>= 0.8.7)
-  rspec (>= 1.3.0)
+  rake (~> 0.8.7)
+  rspec (~> 1.3.0)
