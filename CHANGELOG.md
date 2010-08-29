@@ -4,7 +4,10 @@ Changelog
 TODO
 ----
 
-* Rebuild sprite image only if images have been modified
+* Rebuild sprite image only if images have been modified (including integration specs)
+* Horizontal sprites
+* Add more validations and error messages
+* Rebuild Sass files when images but not Sass sources have been updated
 
 
 1.0.0.beta.1
