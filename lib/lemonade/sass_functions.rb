@@ -16,6 +16,15 @@ module Sass::Script::Functions
     Sass::Script::SpriteInfo.new(:both, sprite, sprite_item, position_x, position_y_shift)
   end
   alias_method :sprite_img, :sprite_image
+  
+  def moved_sprite_image(file, position_x = nil, position_y_shift = nil)
+    sprite_image(file, position_x, position_y_shift)
+  end
+  
+  def sprite_image_with_spacing(file, margin_top_or_both = nil, margin_bottom = nil)
+    zero = Sass::Script::Number.new(0)
+    sprite_image(file, zero, zero, margin_top_or_both, margin_bottom)
+  end
 
   def sprite_files_in_folder(folder)
     assert_type folder, :String

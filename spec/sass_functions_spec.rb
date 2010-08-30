@@ -195,6 +195,19 @@ describe Sass::Script::Functions do
     evaluate('sprite-url("other_images/test.png")').should == "url('/other_images.png')"
   end
 
+  it "should use shortcut functions" do
+    evaluate('moved-sprite-image("sprites/10x10.png", 10px, -20px)').should == "url('/sprites.png') 10px -20px"
+    evaluate(
+      'sprite-image-with-spacing("sprites/10x10.png", 20px)',
+      'sprite-image-with-spacing("sprites/20x20.png", 30px, 50px)',
+      'sprite-image-with-spacing("sprites/30x30.png", 40px)'
+    ).should == [
+      "url('/sprites.png')",
+      "url('/sprites.png') 0 -40px",
+      "url('/sprites.png') 0 -110px"
+    ]
+  end
+
   it "should count the PNG files in a folder" do
     evaluate('sprite-files-in-folder("sprites")').to_i.should == 4
   end
