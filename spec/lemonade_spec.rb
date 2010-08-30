@@ -13,7 +13,7 @@ describe Lemonade do
 
     @file = ""
     File.stub!(:read => @file)
-    Compass.stub_chain(:configuration, :images_path).and_return('image_path')
+    Lemonade.stub(:images_path).and_return('image_path')
     File.stub!(:ctime => Time.parse('2010-01-01 12:00'))
   end
 

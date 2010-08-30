@@ -2,10 +2,6 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe Sass::Script::SpriteInfo do
 
-  before :each do
-    Compass.configuration.http_images_path = ''
-  end
-
   def sprite_info(*args)
     Sass::Script::SpriteInfo.new(*args).to_s
   end
@@ -48,13 +44,6 @@ describe Sass::Script::SpriteInfo do
     sprite = { :file => "sprites.png" }
     sprite_item = { }
     sprite_info(:url, sprite, sprite_item).should == "url('/sprites.png')"
-  end
-
-  it "should output the url with compass path" do
-    sprite = { :file => "sprites.png" }
-    sprite_item = { }
-    Compass.configuration.http_images_path = '/louvre'
-    sprite_info(:url, sprite, sprite_item).should == "url('/louvre/sprites.png')"
   end
 
 end

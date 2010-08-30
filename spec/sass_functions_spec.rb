@@ -5,7 +5,6 @@ describe Sass::Script::Functions do
   before :each do
     Lemonade.reset
     FileUtils.cp_r File.dirname(__FILE__) + '/images', IMAGES_TMP_PATH
-    Compass.configuration.http_images_path = ''
   end
 
   after :each do
@@ -170,7 +169,7 @@ describe Sass::Script::Functions do
     evaluate(
       'sprite-image("sprites/10x10.png", 0, 0, 0, 10px)',
       'sprite-image("sprites/10x10.png", 0, 0, 0, 99px)', # 99px > 10px
-      'sprite-image("sprites/20x20.png")',
+      'sprite-image("sprites/20x20.png")'
     ).should == [
       "url('/sprites.png')",
       "url('/sprites.png')",

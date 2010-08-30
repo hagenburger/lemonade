@@ -21,7 +21,7 @@ module Lemonade
     end
 
     def images_path
-      @@images_path || defined?(Compass) ? Compass.configuration.images_path : 'public/images'
+      @@images_path || (defined?(Compass) ? Compass.configuration.images_path : 'public/images')
     end
 
     def images_path=(path)
@@ -73,7 +73,7 @@ module Lemonade
   private
 
     def sprite_info_file(sprite_name)
-      File.join(Compass.configuration.images_path, "#{sprite_name}.sprite_info.yml")
+      File.join(Lemonade.images_path, "#{sprite_name}.sprite_info.yml")
     end
 
     def timestamps(sprite)
