@@ -1,5 +1,6 @@
 require 'chunky_png'
 require 'lemonade/sprite_info.rb'
+require 'yaml'
 
 module Lemonade
   @@sprites = {}
