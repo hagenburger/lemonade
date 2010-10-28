@@ -57,7 +57,7 @@ private
     filestr = File.join(Lemonade.sprites_path, file.value)
 
     sprite_file ||= "#{dir}#{name}.png"
-    sprite_file = sprite_file << '.png' unless sprite_file.end_with?('.png')
+    sprite_file = "#{sprite_file}.png" unless sprite_file =~ /\.png$/
     sprite = sprite_for(sprite_file)
     sprite_item = image_for(sprite, filestr, position_x, position_y_shift, margin_top_or_both, margin_bottom)
 
