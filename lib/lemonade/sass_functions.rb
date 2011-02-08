@@ -49,19 +49,59 @@ private
   end
 
   def sprite_url_and_position(file, position_x = nil, position_y_shift = nil, margin_top_or_both = nil, margin_bottom = nil)
-    dir, name, basename = extract_names(file, :check_file => true)
-    filestr = File.join(Lemonade.sprites_path, file.value)
-
-    sprite_file = "#{dir}#{name}.png"
-    sprite = sprite_for(sprite_file)
-    sprite_item = image_for(sprite, filestr, position_x, position_y_shift, margin_top_or_both, margin_bottom)
+	image_path, sprite_name = get_image_path_and_sprite_name_for(file)
+	
+    sprite = sprite_for(sprite_name)
+    sprite_item = image_for(sprite, image_path, position_x, position_y_shift, margin_top_or_both, margin_bottom)
 
     # Create a temporary destination file so compass doesn't complain about a missing image
-    FileUtils.touch File.join(Lemonade.images_path, sprite_file)
+    FileUtils.touch File.join(Lemonade.images_path, sprite_name)
 
     [sprite, sprite_item]
   end
+  
+  # ru: Получить путь до картинки (полный путь относительно подключённого sass файла или относительно Lemonade.images_path) и имя для спрайте
+  # en: Get the path to image (full path relative to the imported sass file, or relatively Lemonade.images_path) and name for a sprite
+  def get_image_path_and_sprite_name_for(file)
+	dir, name, basename = extract_names(file, :check_file => true)
+	
+	# reset
+    image_path = nil
+	sprite_name = nil
+	
+    if (Lemonade.last_imported_full_filename != nil)
+	  # ru: Если last_import_full_filename установлен, установить image_path относительно последнего импортированного sass файла
+	  # en: If isset last_import_full_filename, set image_path relative to the last imported sass file.
+	  image_path = File.join(File.dirname(Lemonade.last_imported_full_filename), file.value )
+	  sprite_name = "#{ File.basename(Lemonade.last_imported_full_filename, ".scss") }_#{ name }"
+      if !File.exist?(image_path)
+	    # reset image_path
+        image_path = nil
+      end
+	end
 
+	if (image_path == nil)
+	  # ru: Установить image_path относительно текущего sass file
+	  # en: Set image_path relative to the current sass file
+	  image_path = File.join(File.dirname(options[:filename]), file.value )
+	  sprite_name = "#{ File.basename(options[:filename], ".scss") }_#{ name }"
+	  if !File.exist?(image_path)
+        image_path = nil
+      end
+	end
+	
+	if (image_path == nil)
+	  # ru: Установить image_path относительно Lemonade.images_path
+	  # en: Standard lemonade method. set image_path relative to the Lemonade.images_path
+	  image_path = File.join(Lemonade.images_path, file.value)
+	  sprite_name =  "#{ dir }#{ name }"
+	end
+	
+	sprite_path = "#{ sprite_path }.png"
+
+	[image_path, sprite_name]
+  end
+  
   def extract_names(file, options = {})
     assert_type file, :String
     unless (file.value =~ %r(^(.+/)?([^\.]+?)(/(.+?)\.(png))?$)) == 0
@@ -75,6 +115,7 @@ private
   end
 
   def sprite_for(file)
+  
     file = "#{file}.png" unless file =~ /\.png$/
     Lemonade.sprites[file] ||= {
         :file => "#{file}",
