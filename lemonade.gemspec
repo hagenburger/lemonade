@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
   s.require_path = 'lib'
 
   s.add_runtime_dependency 'haml', '~> 3.0.0'
-  s.add_runtime_dependency 'chunky_png', '~> 0.9.0'
+  s.add_runtime_dependency 'chunky_png', '~> 1.0.0.rc2'
 
   s.add_development_dependency 'rake', '~> 0.8.7'
   s.add_development_dependency 'rspec', '~> 1.3.0'
