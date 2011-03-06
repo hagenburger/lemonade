@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version = Lemonade::Version
   s.date = Time.now.strftime '%Y-%m-%d'
 
-  s.required_rubygems_version = '~> 1.3.6'
+  s.required_rubygems_version = '>= 1.3.6'
   s.authors = ['Nico Hagenburger']
   s.email = 'gems@hagenburger.net'
   s.homepage = 'http://github.com/hagenburger/lemonade'
