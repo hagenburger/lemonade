@@ -14,7 +14,7 @@ describe Lemonade do
     @file = ""
     File.stub!(:read => @file)
     Lemonade.stub(:images_path).and_return('image_path')
-    File.stub!(:ctime => Time.parse('2010-01-01 12:00'))
+    File.stub!(:ctime => Time.local(2010,1,1,12,00))
   end
 
   ###

@@ -111,7 +111,7 @@ module Lemonade
         sprite_item_image  = ChunkyPNG::Image.from_file(sprite_item[:file])
         x = (sprite[:width] - sprite_item[:width]) * (sprite_item[:x].value / 100)
         y = sprite_item[:y].value
-        sprite_image.replace sprite_item_image, x, y
+        sprite_image.replace! sprite_item_image, x, y
       end
       sprite_image.save File.join(Lemonade.images_path, sprite[:file])
     end
