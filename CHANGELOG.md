@@ -1,13 +1,12 @@
 Changelog
 =========
 
-TODO
-----
+1.0.1.deprecated.1, 0.3.5*
+--------------------------
 
-* Rebuild sprite image only if images have been modified (including integration specs)
-* Horizontal sprites
-* Add more validations and error messages
-* Rebuild Sass files when images but not Sass sources have been updated
+* Deprecated everything
+
+\* just to be sure that the deprication will be installed by `gem install lemonade`
 
 
 1.0.0.beta.1

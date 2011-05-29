@@ -7,7 +7,6 @@ Gem::Specification.new do |s|
   s.version = Lemonade::Version
   s.date = Time.now.strftime '%Y-%m-%d'
 
-  s.required_rubygems_version = '~> 1.3.6'
   s.authors = ['Nico Hagenburger']
   s.email = 'gems@hagenburger.net'
   s.homepage = 'http://github.com/hagenburger/lemonade'
@@ -18,14 +17,7 @@ Gem::Specification.new do |s|
   s.extra_rdoc_files = ['README.md']
   s.rdoc_options = ['--charset=UTF-8']
 
-  s.files = Dir["lib/**/*"] + Dir["stylesheets/**/*"] + %w(CHANGELOG.md MIT-LICENSE Rakefile README.md)
-  s.test_files = Dir['spec/**/*']
+  s.files = Dir["lib/**/*"] + %w(CHANGELOG.md MIT-LICENSE README.md)
   s.require_path = 'lib'
-
-  s.add_runtime_dependency 'haml', '~> 3.0.18'
-  s.add_runtime_dependency 'chunky_png', '~> 0.9.0'
-
-  s.add_development_dependency 'rake', '~> 0.8.7'
-  s.add_development_dependency 'rspec', '~> 1.3.0'
 end
 
