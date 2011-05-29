@@ -25,4 +25,4 @@ Try to use an older implementation of ChunkyPNG if you get empty PNGs:
     gem 'lemonade'
     gem 'chunky_png', '0.11.1'
 
-You can find the old Lemonade code in the [master branch](https://github.com/hagenburger/lemonade/tree/master)
+You can find the old Lemonade code in the [master branch](https://github.com/hagenburger/lemonade/tree/original-master)
