@@ -4,7 +4,7 @@
 }
 
 @mixin sprite-image($file) {
-  background: sprite-image($file) $repeat;
+  background: sprite-image($file);
 }
 
 @mixin sized-sprite-image($file) {
