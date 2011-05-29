@@ -13,7 +13,7 @@ Follow @[hagenburger](http://twitter.com/hagenburger) for updates.
 
 Cheers,
 
-Nico)
+Nico
 
 
 Still need to use Lemonade?
