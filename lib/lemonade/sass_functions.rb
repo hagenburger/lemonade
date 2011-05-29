@@ -11,11 +11,15 @@ module Sass::Script::Functions
     Sass::Script::SpriteInfo.new(:position, sprite, sprite_item, position_x, position_y_shift)
   end
 
-  def sprite_image(file, position_x = nil, position_y_shift = nil, margin_top_or_both = nil, margin_bottom = nil)
-    sprite, sprite_item = sprite_url_and_position(file, position_x, position_y_shift, margin_top_or_both, margin_bottom)
+  def sprite_image(file, position_x = nil, position_y_shift = nil, margin_top_or_both = nil, margin_bottom = nil, sprite_file = nil)
+    sprite, sprite_item = sprite_url_and_position(file, position_x, position_y_shift, margin_top_or_both, margin_bottom, sprite_file)
     Sass::Script::SpriteInfo.new(:both, sprite, sprite_item, position_x, position_y_shift)
   end
   alias_method :sprite_img, :sprite_image
+
+  def named_sprite_image(file, sprite_file, position_x = nil, position_y_shift = nil, margin_top_or_both = nil, margin_bottom = nil)
+    sprite_image(file, position_x, position_y_shift, margin_top_or_both, margin_bottom, sprite_file.value)
+  end
 
   def sprite_files_in_folder(folder)
     assert_type folder, :String
@@ -48,11 +52,12 @@ private
     Dir.glob(File.join(dir, '*.png')).sort
   end
 
-  def sprite_url_and_position(file, position_x = nil, position_y_shift = nil, margin_top_or_both = nil, margin_bottom = nil)
+  def sprite_url_and_position(file, position_x = nil, position_y_shift = nil, margin_top_or_both = nil, margin_bottom = nil, sprite_file = nil)
     dir, name, basename = extract_names(file, :check_file => true)
     filestr = File.join(Lemonade.sprites_path, file.value)
 
-    sprite_file = "#{dir}#{name}.png"
+    sprite_file ||= "#{dir}#{name}.png"
+    sprite_file = "#{sprite_file}.png" unless sprite_file =~ /\.png$/
     sprite = sprite_for(sprite_file)
     sprite_item = image_for(sprite, filestr, position_x, position_y_shift, margin_top_or_both, margin_bottom)
 

@@ -213,4 +213,25 @@ describe Sass::Script::Functions do
     evaluate('image-basename("sprites/10x10.png")').should == "10x10"
   end
 
+  it "should return the specified sprite file name" do
+    evaluate('named-sprite-image("sprites/30x30.png", "named_sprites.png")').should == "url('/named_sprites.png')"
+  end
+
+  it "should return sprite file name with .png extension" do
+    evaluate('named-sprite-image("sprites/30x30.png", "named_sprites")').should == "url('/named_sprites.png')"
+  end
+
+  it "should accept optional arguments for named-sprite-image" do
+    evaluate(
+      'named-sprite-image("sprites/10x10.png", "named_sprites.png")',
+      'named-sprite-image("sprites/20x20.png", "named_sprites.png", 5px, 0, 0, 15px)',
+      'named-sprite-image("sprites/30x30.png", "named_sprites.png", 0, 5px, 20px)'
+    ).should == [
+      "url('/named_sprites.png')",
+      "url('/named_sprites.png') 5px -10px",
+      "url('/named_sprites.png') 0 -45px"
+    ]
+    image_size('named_sprites.png').should == [30, 80]
+  end
+
 end
