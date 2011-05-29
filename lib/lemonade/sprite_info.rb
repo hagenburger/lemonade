@@ -17,6 +17,7 @@ module Sass::Script
     end
 
     def to_s(opts = {})
+      repeat = 'no-repeat'
       case @type
       when :position
         position
@@ -27,7 +28,7 @@ module Sass::Script
         if pos == '0 0'
           url
         else
-          "#{url} #{pos}"
+          "#{url} #{pos} #{repeat}"
         end
       end
     end
