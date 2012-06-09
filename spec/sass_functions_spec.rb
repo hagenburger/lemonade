@@ -213,4 +213,16 @@ describe Sass::Script::Functions do
     evaluate('image-basename("sprites/10x10.png")').should == "10x10"
   end
 
+  // FIXME How can we test it actually repeated the 10x10 twice?
+  it "should accept a repeat argument" do
+    evaluate(
+      'sprite-image("sprites/10x10.png", 0, 0, 0, 0, true)',
+      'sprite-image("sprites/20x20.png")'
+    ).should == [
+      "url('/sprites.png')",
+      "url('/sprites.png') 0 -10px"
+    ]
+    image_size('sprites.png').should == [20, 30]
+  end
+
 end

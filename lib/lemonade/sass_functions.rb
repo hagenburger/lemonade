@@ -6,13 +6,13 @@ module Sass::Script::Functions
     Sass::Script::SpriteInfo.new(:url, sprite)
   end
 
-  def sprite_position(file, position_x = nil, position_y_shift = nil, margin_top_or_both = nil, margin_bottom = nil)
-    sprite, sprite_item = sprite_url_and_position(file, position_x, position_y_shift, margin_top_or_both, margin_bottom)
+  def sprite_position(file, position_x = nil, position_y_shift = nil, margin_top_or_both = nil, margin_bottom = nil, repeat = nil)
+    sprite, sprite_item = sprite_url_and_position(file, position_x, position_y_shift, margin_top_or_both, margin_bottom, repeat)
     Sass::Script::SpriteInfo.new(:position, sprite, sprite_item, position_x, position_y_shift)
   end
 
-  def sprite_image(file, position_x = nil, position_y_shift = nil, margin_top_or_both = nil, margin_bottom = nil)
-    sprite, sprite_item = sprite_url_and_position(file, position_x, position_y_shift, margin_top_or_both, margin_bottom)
+  def sprite_image(file, position_x = nil, position_y_shift = nil, margin_top_or_both = nil, margin_bottom = nil, repeat = nil)
+    sprite, sprite_item = sprite_url_and_position(file, position_x, position_y_shift, margin_top_or_both, margin_bottom, repeat)
     Sass::Script::SpriteInfo.new(:both, sprite, sprite_item, position_x, position_y_shift)
   end
   alias_method :sprite_img, :sprite_image
@@ -48,13 +48,13 @@ private
     Dir.glob(File.join(dir, '*.png')).sort
   end
 
-  def sprite_url_and_position(file, position_x = nil, position_y_shift = nil, margin_top_or_both = nil, margin_bottom = nil)
+  def sprite_url_and_position(file, position_x = nil, position_y_shift = nil, margin_top_or_both = nil, margin_bottom = nil, repeat = nil)
     dir, name, basename = extract_names(file, :check_file => true)
     filestr = File.join(Lemonade.sprites_path, file.value)
 
     sprite_file = "#{dir}#{name}.png"
     sprite = sprite_for(sprite_file)
-    sprite_item = image_for(sprite, filestr, position_x, position_y_shift, margin_top_or_both, margin_bottom)
+    sprite_item = image_for(sprite, filestr, position_x, position_y_shift, margin_top_or_both, margin_bottom, repeat)
 
     # Create a temporary destination file so compass doesn't complain about a missing image
     FileUtils.touch File.join(Lemonade.images_path, sprite_file)
@@ -85,11 +85,14 @@ private
       }
   end
 
-  def image_for(sprite, file, position_x, position_y_shift, margin_top_or_both, margin_bottom)
+  def image_for(sprite, file, position_x, position_y_shift, margin_top_or_both, margin_bottom, repeat)
     image = sprite[:images].detect{ |image| image[:file] == file }
     margin_top_or_both ||= Sass::Script::Number.new(0)
     margin_top = margin_top_or_both.value #calculate_margin_top(sprite, margin_top_or_both, margin_bottom)
     margin_bottom = (margin_bottom || margin_top_or_both).value
+    if repeat
+      repeat == 'true' ? true: false
+    end
     if image
       image[:margin_top] = margin_top if margin_top > image[:margin_top]
       image[:margin_bottom] = margin_bottom if margin_bottom > image[:margin_bottom]
@@ -105,7 +108,8 @@ private
         :x => x,
         :margin_top => margin_top,
         :margin_bottom => margin_bottom,
-        :index => sprite[:images].length
+        :index => sprite[:images].length,
+        :repeat => repeat
       }
       sprite[:images] << image
     end
