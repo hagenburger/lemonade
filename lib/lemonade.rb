@@ -1,13 +1,22 @@
 require 'chunky_png'
 require 'lemonade/sprite_info.rb'
+require 'yaml'
 
 module Lemonade
   @@sprites = {}
   @@sprites_path = nil
   @@images_path = nil
-
+  @@last_imported_full_filename = nil
   class << self
-
+  
+    def last_imported_full_filename
+      @@last_imported_full_filename
+    end
+	
+    def last_imported_full_filename=(full_filename)
+      @@last_imported_full_filename = full_filename
+    end
+	
     def sprites
       @@sprites
     end

@@ -19,3 +19,24 @@ module Sass
   end
 
 end
+
+
+module Sass
+
+  module Tree
+
+    class ImportNode < RootNode
+	  
+		alias_method :_perform_without_lemonade, :_perform
+		def _perform(environment)
+		  # ru: Последний импортированный sass файл.
+		  # en: set last imported sass filename
+		  Lemonade.last_imported_full_filename = full_filename
+		  _perform_without_lemonade environment  
+		end
+	
+    end
+
+  end
+
+end
